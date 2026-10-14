@@ -338,22 +338,93 @@ p { margin: 0 0 1rem; }
   border-radius: 999px;
 }
 
-/* Ilustrasi hero */
-.hero__art { display: flex; justify-content: center; }
-.net-art {
+/* ---------- Foto Profil Hero ---------- */
+.hero__art {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 420px;
+}
+
+/* SVG jaringan di belakang foto */
+.net-art--back {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  max-width: 480px;
-  height: auto;
-  filter: drop-shadow(0 20px 40px rgba(15,23,42,.08));
+  height: 100%;
+  max-width: none;
+  opacity: .9;
+  z-index: 0;
+  pointer-events: none;
 }
-.pulse-ring {
-  transform-origin: 240px 210px;
-  animation: pulse 3s ease-out infinite;
+
+/* Kontainer foto */
+.profile {
+  position: relative;
+  z-index: 1;
+  width: clamp(220px, 60%, 320px);
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
 }
-@keyframes pulse {
-  0%   { transform: scale(1);   opacity: .35; }
-  70%  { transform: scale(1.25);opacity: 0; }
-  100% { transform: scale(1.25);opacity: 0; }
+
+/* Cincin dekoratif */
+.profile__ring {
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  border: 2px dashed rgba(37, 99, 235, .35);
+  animation: spin 30s linear infinite;
+}
+.profile__ring--2 {
+  inset: -28px;
+  border: 1px solid rgba(37, 99, 235, .18);
+  border-style: solid;
+  animation: spin 45s linear infinite reverse;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Frame foto melingkar */
+.profile__figure {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #F8FAFC;
+  border: 6px solid #FFFFFF;
+  box-shadow:
+    0 25px 50px -20px rgba(15,23,42,.35),
+    0 0 0 2px rgba(37,99,235,.15);
+}
+
+.profile__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%; /* fokus ke wajah */
+  display: block;
+}
+
+/* Badge nama */
+.profile__badge {
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0F172A;
+  color: #fff;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  padding: .45rem .95rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  box-shadow: 0 10px 25px -12px rgba(15,23,42,.6);
 }
 
 /* ---------- Tentang ---------- */
@@ -720,7 +791,12 @@ p { margin: 0 0 1rem; }
 /* ---------- Responsif ---------- */
 @media (max-width: 900px) {
   .hero__inner { grid-template-columns: 1fr; }
-  .hero__art { order: -1; max-width: 380px; margin: 0 auto; }
+  .hero__art {
+    order: -1;
+    max-width: 380px;
+    margin: 0 auto;
+    min-height: 340px;
+  }
   .about { grid-template-columns: 1fr; }
 }
 
