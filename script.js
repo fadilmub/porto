@@ -8,6 +8,8 @@
    - Tombol "kembali ke atas" melayang
    - Reveal on scroll (IntersectionObserver)
    - Header shadow saat scroll
+   - Scroll progress bar
+   - Stagger reveal (kartu muncul bergantian)
    ========================================================= */
 
 (function () {
@@ -127,6 +129,32 @@
       { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
     );
     revealEls.forEach((el) => io.observe(el));
+  }
+
+  /* ---------- 8. Scroll progress bar ---------- */
+  const progress = document.getElementById('scrollProgress');
+  if (progress) {
+    const updateProgress = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+      progress.style.width = pct + '%';
+    };
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  }
+
+  /* ---------- 9. Stagger reveal: kartu muncul bergantian ---------- */
+  if (!prefersReducedMotion) {
+    document.querySelectorAll('.skills, .projects, .contact-grid').forEach((group) => {
+      group.querySelectorAll(':scope > .reveal').forEach((el, i) => {
+        el.style.transitionDelay = (i * 90) + 'ms';
+      });
+    });
+    document.querySelectorAll('.timeline').forEach((group) => {
+      group.querySelectorAll(':scope > .timeline__item.reveal').forEach((el, i) => {
+        el.style.transitionDelay = (i * 110) + 'ms';
+      });
+    });
   }
 
   /* ---------- 7. Placeholder link guard ---------- */

@@ -853,6 +853,137 @@ p { margin: 0 0 1rem; }
   .project-card, .skill-card, .timeline__body { padding: 1.1rem; }
 }
 
+/* ---------- Animasi tambahan ---------- */
+
+/* Scroll progress bar (lebar diatur via JS) */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, #2563EB, #38BDF8);
+  z-index: 200;
+}
+
+/* Hero: elemen muncul berurutan saat halaman dibuka */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes heroArtIn {
+  from { opacity: 0; transform: translateY(16px) scale(.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.hero__eyebrow,
+.hero__title,
+.hero__desc,
+.hero__actions,
+.hero__tags {
+  opacity: 0;
+  animation: fadeUp .7s cubic-bezier(.22,.61,.36,1) forwards;
+}
+.hero__eyebrow { animation-delay: .05s; }
+.hero__title { animation-delay: .15s; }
+.hero__desc { animation-delay: .28s; }
+.hero__actions { animation-delay: .4s; }
+.hero__tags { animation-delay: .52s; }
+.hero__art {
+  opacity: 0;
+  animation: heroArtIn .8s cubic-bezier(.22,.61,.36,1) .25s forwards;
+}
+
+/* Judul hero: gradien biru bergerak halus */
+.text-blue {
+  background: linear-gradient(90deg, #2563EB, #38BDF8, #2563EB);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradientMove 6s ease-in-out infinite;
+}
+@keyframes gradientMove {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Dot status di hero berdenyut */
+.hero__eyebrow .dot { animation: dotBlink 2s ease-in-out infinite; }
+@keyframes dotBlink {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(37,99,235,.15); }
+  50% { box-shadow: 0 0 0 7px rgba(37,99,235,.08); }
+}
+
+/* Ilustrasi jaringan: node berdenyut & paket mengalir di garis */
+@keyframes nodePulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.18); opacity: .7; }
+}
+.net-node {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: nodePulse 2.6s ease-in-out infinite;
+}
+.net-node:nth-of-type(3) { animation-delay: .35s; }
+.net-node:nth-of-type(4) { animation-delay: .7s; }
+.net-node:nth-of-type(5) { animation-delay: 1.05s; }
+.net-node:nth-of-type(6) { animation-delay: 1.4s; }
+.net-lines path {
+  stroke-dasharray: 6 10;
+  animation: dashFlow 1.6s linear infinite;
+}
+@keyframes dashFlow {
+  to { stroke-dashoffset: -16; }
+}
+@keyframes coreGlow {
+  0%, 100% { opacity: .9; }
+  50% { opacity: .55; }
+}
+.net-core { animation: coreGlow 3s ease-in-out infinite; }
+
+/* Tombol utama: kilau menyapu saat hover */
+.btn--primary { position: relative; overflow: hidden; }
+.btn--primary::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent);
+  transform: skewX(-20deg);
+  transition: left .5s ease;
+}
+.btn--primary:hover::after { left: 130%; }
+
+/* Kartu keahlian: ikon membesar & miring saat hover */
+.skill-card__icon { transition: transform .25s ease; }
+.skill-card:hover .skill-card__icon { transform: scale(1.12) rotate(-6deg); }
+
+/* Kartu proyek: garis aksen biru tumbuh dari atas saat hover */
+.project-card { position: relative; overflow: hidden; }
+.project-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(#2563EB, #38BDF8);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform .3s ease;
+}
+.project-card:hover::before { transform: scaleY(1); }
+
+/* Timeline: titik berdenyut */
+@keyframes dotPulse {
+  0% { box-shadow: 0 0 0 4px #EFF6FF, 0 0 0 0 rgba(37,99,235,.35); }
+  70% { box-shadow: 0 0 0 4px #EFF6FF, 0 0 0 10px rgba(37,99,235,0); }
+  100% { box-shadow: 0 0 0 4px #EFF6FF, 0 0 0 0 rgba(37,99,235,0); }
+}
+.timeline__dot { animation: dotPulse 2.4s ease-out infinite; }
+
 /* ---------- Prefers reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
