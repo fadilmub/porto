@@ -137,16 +137,10 @@ p { margin: 0 0 1rem; }
 .nav__brand:hover { color: #0F172A; }
 
 .nav__brand-mark {
-  display: grid;
-  place-items: center;
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: linear-gradient(135deg, #2563EB, #0F172A);
-  color: #fff;
-  font-weight: 800;
-  font-size: .85rem;
-  letter-spacing: .02em;
+  flex: none;
 }
 
 .nav__menu {
