@@ -265,7 +265,7 @@ p { margin: 0 0 1rem; }
   letter-spacing: -0.02em;
   margin-bottom: 1rem;
 }
-.text-blue { color: #2563EB; }
+.text-blue { color: #1D4ED8; }
 
 .hero__desc {
   color: #475569;
@@ -836,8 +836,15 @@ p { margin: 0 0 1rem; }
     border-bottom: none;
   }
 
-  .hero { padding: 3rem 0 3.5rem; }
+  .hero { padding: 2rem 0 2.5rem; }
   .hero__actions .btn { flex: 1 1 auto; }
+  .hero__art { min-height: 0; }
+  .profile__visual { width: 215px; }
+  .profile__ring { inset: -10px; }
+  .profile__ring--2 { inset: -20px; }
+  .hero__title { margin-bottom: .75rem; }
+  .hero__desc { margin-bottom: 1.25rem; }
+  .hero__actions { margin-bottom: 1.25rem; }
 
   .footer__inner { flex-direction: column; text-align: center; }
 }
