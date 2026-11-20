@@ -10,6 +10,9 @@
    - Header shadow saat scroll
    - Scroll progress bar
    - Stagger reveal (kartu muncul bergantian)
+   - Dark mode toggle (tersimpan)
+   - Scrollspy nav aktif
+   - Canvas jaringan bergerak di hero
    ========================================================= */
 
 (function () {
@@ -155,6 +158,128 @@
         el.style.transitionDelay = (i * 110) + 'ms';
       });
     });
+  }
+
+
+  /* ---------- 10. Dark mode toggle ---------- */
+  const root = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  const savedTheme = (() => {
+    try { return localStorage.getItem('porto-theme'); } catch (e) { return null; }
+  })();
+  if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    root.setAttribute('data-theme', 'dark');
+  }
+  const syncThemeToggle = () => {
+    if (!themeToggle) return;
+    const isDark = root.getAttribute('data-theme') === 'dark';
+    themeToggle.setAttribute('aria-pressed', String(isDark));
+    themeToggle.setAttribute('aria-label', isDark ? 'Ganti ke mode terang' : 'Ganti ke mode gelap');
+  };
+  syncThemeToggle();
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const isDark = root.getAttribute('data-theme') === 'dark';
+      if (isDark) root.removeAttribute('data-theme');
+      else root.setAttribute('data-theme', 'dark');
+      try { localStorage.setItem('porto-theme', isDark ? 'light' : 'dark'); } catch (e) { /* abaikan */ }
+      syncThemeToggle();
+    });
+  }
+
+  /* ---------- 11. Scrollspy: nav aktif ikut section ---------- */
+  const spyLinks = Array.from(document.querySelectorAll('.nav__menu .nav__link[href^="#"]'));
+  const spySections = spyLinks
+    .map((link) => document.querySelector(link.getAttribute('href')))
+    .filter(Boolean);
+  if ('IntersectionObserver' in window && spySections.length) {
+    const spy = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          spyLinks.forEach((link) => {
+            link.classList.toggle('is-active', link.getAttribute('href') === '#' + entry.target.id);
+          });
+        });
+      },
+      { rootMargin: '-40% 0px -55% 0px' }
+    );
+    spySections.forEach((section) => spy.observe(section));
+  }
+
+  /* ---------- 12. Canvas jaringan bergerak di hero ---------- */
+  const canvas = document.getElementById('netCanvas');
+  if (canvas && canvas.getContext) {
+    const ctx = canvas.getContext('2d');
+    const hero = canvas.closest('.hero');
+    let points = [];
+    let raf = null;
+
+    const buildPoints = () => {
+      const rect = hero.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+      canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const count = Math.min(60, Math.floor((rect.width * rect.height) / 22000));
+      points = Array.from({ length: count }, () => ({
+        x: Math.random() * rect.width,
+        y: Math.random() * rect.height,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: (Math.random() - 0.5) * 0.25,
+        r: 1.4 + Math.random() * 1.6
+      }));
+    };
+
+    const drawOnce = () => {
+      const rect = hero.getBoundingClientRect();
+      ctx.clearRect(0, 0, rect.width, rect.height);
+      points.forEach((pt) => {
+        ctx.fillStyle = 'rgba(37, 99, 235, 0.55)';
+        ctx.beginPath(); ctx.arc(pt.x, pt.y, pt.r, 0, Math.PI * 2); ctx.fill();
+      });
+    };
+
+    const draw = () => {
+      const rect = hero.getBoundingClientRect();
+      ctx.clearRect(0, 0, rect.width, rect.height);
+      for (let i = 0; i < points.length; i++) {
+        const pt = points[i];
+        pt.x += pt.vx; pt.y += pt.vy;
+        if (pt.x < 0 || pt.x > rect.width) pt.vx *= -1;
+        if (pt.y < 0 || pt.y > rect.height) pt.vy *= -1;
+        for (let j = i + 1; j < points.length; j++) {
+          const q = points[j];
+          const dx = pt.x - q.x, dy = pt.y - q.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 130) {
+            ctx.strokeStyle = 'rgba(37, 99, 235,' + (0.14 * (1 - dist / 130)).toFixed(3) + ')';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(pt.x, pt.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+          }
+        }
+        ctx.fillStyle = 'rgba(37, 99, 235, 0.55)';
+        ctx.beginPath(); ctx.arc(pt.x, pt.y, pt.r, 0, Math.PI * 2); ctx.fill();
+      }
+      raf = requestAnimationFrame(draw);
+    };
+
+    buildPoints();
+    if (prefersReducedMotion) {
+      drawOnce();
+    } else {
+      raf = requestAnimationFrame(draw);
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = null; }
+        else if (!raf) raf = requestAnimationFrame(draw);
+      });
+    }
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => { buildPoints(); if (prefersReducedMotion) drawOnce(); }, 200);
+    });
+    window.addEventListener('load', () => { buildPoints(); if (prefersReducedMotion) drawOnce(); });
   }
 
   /* ---------- 7. Placeholder link guard ---------- */

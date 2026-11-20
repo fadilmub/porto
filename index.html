@@ -27,6 +27,11 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   -->
 
+  <!-- Font: Plus Jakarta Sans (isi) & Space Grotesk (judul) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -47,19 +52,6 @@
         <span class="nav__brand-text">Fadil Mubarok</span>
       </a>
 
-      <button
-        class="nav__toggle"
-        id="navToggle"
-        type="button"
-        aria-label="Buka menu navigasi"
-        aria-expanded="false"
-        aria-controls="navMenu"
-      >
-        <span class="nav__toggle-bar" aria-hidden="true"></span>
-        <span class="nav__toggle-bar" aria-hidden="true"></span>
-        <span class="nav__toggle-bar" aria-hidden="true"></span>
-      </button>
-
       <ul class="nav__menu" id="navMenu">
         <li><a class="nav__link" href="#tentang">Tentang</a></li>
         <li><a class="nav__link" href="#keahlian">Keahlian</a></li>
@@ -67,6 +59,32 @@
         <li><a class="nav__link" href="#pengalaman">Pengalaman</a></li>
         <li><a class="nav__link nav__link--cta" href="#kontak">Kontak</a></li>
       </ul>
+
+      <div class="nav__actions">
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          type="button"
+          aria-label="Ganti ke mode gelap"
+          aria-pressed="false"
+        >
+          <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20 12.5A8.5 8.5 0 1 1 11.5 4 6.5 6.5 0 0 0 20 12.5z"/></svg>
+          <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+
+        <button
+          class="nav__toggle"
+          id="navToggle"
+          type="button"
+          aria-label="Buka menu navigasi"
+          aria-expanded="false"
+          aria-controls="navMenu"
+        >
+          <span class="nav__toggle-bar" aria-hidden="true"></span>
+          <span class="nav__toggle-bar" aria-hidden="true"></span>
+          <span class="nav__toggle-bar" aria-hidden="true"></span>
+        </button>
+      </div>
     </nav>
   </header>
 
@@ -76,6 +94,7 @@
          HERO
          ============================================================ -->
     <section class="hero" id="hero">
+      <canvas class="hero__canvas" id="netCanvas" aria-hidden="true"></canvas>
       <div class="container hero__inner">
 
         <div class="hero__content">
@@ -222,8 +241,7 @@
             <div class="mini-card">
               <span class="mini-card__label">Pekerjaan saat ini</span>
               <span class="mini-card__value">HelpDesk — QCNet</span>
-              <!-- EDIT: lengkapi tanggal mulai -->
-              <span class="mini-card__sub">Tanggal mulai: perlu dikonfirmasi</span>
+              <span class="mini-card__sub">ISP · Layanan internet pelanggan</span>
             </div>
             <div class="mini-card">
               <span class="mini-card__label">Fokus</span>
@@ -360,9 +378,35 @@
 
           <!-- Proyek 1 -->
           <article class="project-card reveal">
+            <div class="project-card__visual" aria-hidden="true">
+              <svg viewBox="0 0 400 140" preserveAspectRatio="xMidYMid slice">
+                <rect width="400" height="140" fill="#0F172A"/>
+                <g stroke="#1E293B" stroke-width="1">
+                  <path d="M0 35H400M0 70H400M0 105H400M50 0V140M150 0V140M250 0V140M350 0V140"/>
+                </g>
+                <g stroke="#38BDF8" stroke-width="1.6" fill="none" opacity="0.7">
+                  <path d="M200 70 L80 40 L60 100"/>
+                  <path d="M200 70 L320 35 L345 95"/>
+                  <path d="M200 70 L200 115"/>
+                </g>
+                <circle cx="200" cy="70" r="11" fill="#2563EB" stroke="#fff" stroke-width="1.5"/>
+                <g fill="#38BDF8" stroke="#0F172A" stroke-width="1.5">
+                  <circle cx="80" cy="40" r="7"/>
+                  <circle cx="320" cy="35" r="7"/>
+                  <circle cx="60" cy="100" r="6"/>
+                  <circle cx="345" cy="95" r="6"/>
+                  <circle cx="200" cy="115" r="6"/>
+                </g>
+                <g fill="#94A3B8" font-family="monospace" font-size="10">
+                  <text x="200" y="52" text-anchor="middle">ODC</text>
+                  <text x="80" y="28" text-anchor="middle">ODP</text>
+                  <text x="320" y="23" text-anchor="middle">ODP</text>
+                </g>
+              </svg>
+            </div>
             <div class="project-card__top">
               <h3 class="project-card__title">Fiber Manager</h3>
-              <span class="badge badge--warn">Status: perlu dikonfirmasi</span>
+              <span class="badge badge--ok">Aktif</span>
             </div>
             <p class="project-card__desc">
               Aplikasi internal untuk memetakan dan mendata jaringan FTTH —
@@ -389,17 +433,24 @@
               <li>MariaDB</li>
               <li>Leaflet</li>
             </ul>
-            <!-- EDIT: ganti href dengan tautan repositori/dokumentasi asli -->
             <p class="project-card__link">
-              <a href="#" aria-disabled="true" data-placeholder>Dokumentasi: belum tersedia</a>
+              <a href="https://github.com/fadilmub/fiber-manager" target="_blank" rel="noopener noreferrer">Lihat di GitHub</a>
             </p>
           </article>
 
           <!-- Proyek 2 -->
           <article class="project-card reveal">
+            <div class="project-card__visual project-card__visual--terminal" aria-hidden="true">
+              <div class="terminal">
+                <div class="terminal__bar"><span></span><span></span><span></span></div>
+                <p><span class="t-prompt">[admin@MikroTik] &gt;</span> /interface monitor-traffic ether1</p>
+                <p>tx: 84.2 Mbps &nbsp; rx: 91.7 Mbps</p>
+                <p class="t-ok">Telegram: notifikasi terkirim</p>
+              </div>
+            </div>
             <div class="project-card__top">
               <h3 class="project-card__title">MikroTik Link Monitoring + Telegram</h3>
-              <span class="badge badge--warn">Status: perlu dikonfirmasi</span>
+              <span class="badge badge--warn">Eksperimen</span>
             </div>
             <p class="project-card__desc">
               Eksperimen monitoring status link pada perangkat MikroTik yang
@@ -425,16 +476,34 @@
               <li>RouterOS</li>
               <li>Telegram API</li>
             </ul>
-            <p class="project-card__link">
-              <a href="#" aria-disabled="true" data-placeholder>Dokumentasi: belum tersedia</a>
-            </p>
           </article>
 
           <!-- Proyek 3 -->
           <article class="project-card reveal">
+            <div class="project-card__visual" aria-hidden="true">
+              <svg viewBox="0 0 400 140" preserveAspectRatio="xMidYMid slice">
+                <rect width="400" height="140" fill="#0F172A"/>
+                <g fill="#1E293B" stroke="#334155">
+                  <rect x="160" y="12" width="80" height="26" rx="4"/>
+                  <rect x="160" y="44" width="80" height="26" rx="4"/>
+                  <rect x="160" y="76" width="80" height="26" rx="4"/>
+                  <rect x="160" y="108" width="80" height="16" rx="4"/>
+                </g>
+                <g>
+                  <circle class="led" cx="170" cy="25" r="3" fill="#4ADE80"/>
+                  <circle class="led" cx="170" cy="57" r="3" fill="#38BDF8"/>
+                  <circle class="led" cx="170" cy="89" r="3" fill="#4ADE80"/>
+                  <circle class="led" cx="170" cy="116" r="3" fill="#FBBF24"/>
+                </g>
+                <g stroke="#475569" stroke-width="2" stroke-linecap="round">
+                  <path d="M182 25h44M182 57h44M182 89h44"/>
+                </g>
+                <text x="200" y="136" text-anchor="middle" fill="#94A3B8" font-family="monospace" font-size="10">PROXMOX · CLOUDFLARE TUNNEL</text>
+              </svg>
+            </div>
             <div class="project-card__top">
               <h3 class="project-card__title">Homelab Proxmox &amp; Cloudflare Tunnel</h3>
-              <span class="badge badge--warn">Status: perlu dikonfirmasi</span>
+              <span class="badge badge--ok">Aktif</span>
             </div>
             <p class="project-card__desc">
               Lingkungan belajar mandiri berupa homelab untuk menjalankan
@@ -460,9 +529,6 @@
               <li>Ubuntu Server</li>
               <li>Cloudflare Tunnel</li>
             </ul>
-            <p class="project-card__link">
-              <a href="#" aria-disabled="true" data-placeholder>Dokumentasi: belum tersedia</a>
-            </p>
           </article>
 
         </div>
@@ -489,9 +555,7 @@
               <p class="timeline__org">QCNet (ISP)</p>
               <p class="timeline__desc">
                 Menangani kebutuhan teknis pelanggan terkait layanan internet.
-                <!-- EDIT: tambahkan tanggal mulai & rincian tugas setelah dikonfirmasi -->
               </p>
-              <p class="timeline__note">Tanggal mulai &amp; rincian tugas: perlu dikonfirmasi.</p>
             </div>
           </li>
 
@@ -504,20 +568,18 @@
               <p class="timeline__desc">
                 Pekerjaan teknis lapangan terkait jaringan dan konektivitas pelanggan.
               </p>
-              <p class="timeline__note">Tanggal akhir: perlu dikonfirmasi.</p>
             </div>
           </li>
 
           <li class="timeline__item reveal">
             <div class="timeline__dot" aria-hidden="true"></div>
             <div class="timeline__body">
-              <span class="timeline__period">Periode perlu dikonfirmasi</span>
+              <span class="timeline__period">Magang</span>
               <h3 class="timeline__role">Magang — Technical Engineer</h3>
               <p class="timeline__org">CEO Point Networking</p>
               <p class="timeline__desc">
                 Terlibat dalam instalasi dan administrasi jaringan.
               </p>
-              <p class="timeline__note">Tanggal mulai &amp; selesai: perlu dikonfirmasi.</p>
             </div>
           </li>
 

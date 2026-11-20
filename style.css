@@ -21,7 +21,7 @@ html {
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
   line-height: 1.65;
   color: #0F172A;
@@ -41,7 +41,7 @@ a:hover, a:focus-visible { color: #1D4ED8; }
 ul, ol { padding-left: 1.1rem; }
 ul.chips, ol.timeline { list-style: none; padding: 0; margin: 0; }
 
-h1, h2, h3, h4 { line-height: 1.25; margin: 0 0 .5rem; color: #0F172A; }
+h1, h2, h3, h4 { font-family: "Space Grotesk", "Plus Jakarta Sans", system-ui, sans-serif; line-height: 1.25; margin: 0 0 .5rem; color: #0F172A; }
 p { margin: 0 0 1rem; }
 
 :focus-visible {
@@ -996,4 +996,192 @@ p { margin: 0 0 1rem; }
     scroll-behavior: auto !important;
   }
   .reveal { opacity: 1; transform: none; }
+}
+
+/* ---------- Saran tampilan: dark mode, font, canvas, visual proyek ---------- */
+
+/* Toggle tema di navbar */
+.nav__actions {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid #E2E8F0;
+  background: transparent;
+  color: #0F172A;
+  cursor: pointer;
+  transition: border-color .2s ease, color .2s ease, transform .15s ease;
+}
+.theme-toggle:hover { border-color: #2563EB; color: #2563EB; transform: translateY(-1px); }
+.theme-toggle__icon { width: 19px; height: 19px; }
+.theme-toggle__icon--sun { display: none; }
+html[data-theme="dark"] .theme-toggle__icon--sun { display: block; }
+html[data-theme="dark"] .theme-toggle__icon--moon { display: none; }
+
+/* Scrollspy: link nav section yang sedang dibaca */
+.nav__link.is-active { color: #2563EB; }
+.nav__link.is-active::after { transform: scaleX(1); }
+
+/* Hero canvas: jaringan bergerak */
+.hero { position: relative; overflow: hidden; }
+.hero__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: .5;
+}
+.hero__inner { position: relative; z-index: 1; }
+
+/* Visual header kartu proyek */
+.project-card__visual {
+  margin: -1.6rem -1.6rem 0;
+  height: 140px;
+  overflow: hidden;
+  background: #0F172A;
+  border-bottom: 1px solid #E2E8F0;
+}
+.project-card__visual svg { width: 100%; height: 100%; display: block; }
+.terminal {
+  height: 100%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .78rem;
+  line-height: 1.7;
+  color: #CBD5E1;
+  padding: .55rem 0 .6rem;
+  overflow: hidden;
+}
+.terminal__bar { display: flex; gap: 6px; padding: 0 .85rem .35rem; }
+.terminal__bar span { width: 10px; height: 10px; border-radius: 50%; }
+.terminal__bar span:nth-child(1) { background: #F87171; }
+.terminal__bar span:nth-child(2) { background: #FBBF24; }
+.terminal__bar span:nth-child(3) { background: #4ADE80; }
+.terminal p { margin: 0; padding: 0 .85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.t-prompt { color: #38BDF8; }
+.t-ok { color: #4ADE80; }
+
+/* LED rak server berkedip */
+.led { animation: ledBlink 1.8s ease-in-out infinite; }
+@keyframes ledBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .2; }
+}
+
+/* Badge hijau untuk status aktif */
+.badge--ok {
+  background: #DCFCE7;
+  color: #166534;
+  border-color: #BBF7D0;
+}
+
+/* ---------- Dark mode ---------- */
+html[data-theme="dark"] body { background-color: #0F172A; color: #E2E8F0; }
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4 { color: #F8FAFC; }
+html[data-theme="dark"] a { color: #60A5FA; }
+html[data-theme="dark"] a:hover,
+html[data-theme="dark"] a:focus-visible { color: #93C5FD; }
+html[data-theme="dark"] .section--gray { background-color: #1E293B; }
+html[data-theme="dark"] .section__lead,
+html[data-theme="dark"] .hero__desc,
+html[data-theme="dark"] .about__text p,
+html[data-theme="dark"] .project-card__desc,
+html[data-theme="dark"] .project-card__meta dd,
+html[data-theme="dark"] .timeline__desc,
+html[data-theme="dark"] .timeline__org { color: #CBD5E1; }
+html[data-theme="dark"] .section__eyebrow,
+html[data-theme="dark"] .timeline__period { background: #1E3A8A; color: #BFDBFE; }
+html[data-theme="dark"] .site-header {
+  background: rgba(15,23,42,.85);
+  border-bottom-color: #1E293B;
+}
+html[data-theme="dark"] .nav__brand,
+html[data-theme="dark"] .nav__link { color: #F1F5F9; }
+html[data-theme="dark"] .nav__brand:hover { color: #F1F5F9; }
+html[data-theme="dark"] .nav__link:hover,
+html[data-theme="dark"] .nav__link.is-active { color: #60A5FA; }
+html[data-theme="dark"] .nav__link::after { background: #60A5FA; }
+html[data-theme="dark"] .theme-toggle { border-color: #334155; color: #F1F5F9; }
+html[data-theme="dark"] .theme-toggle:hover { border-color: #60A5FA; color: #60A5FA; }
+html[data-theme="dark"] .nav__toggle { border-color: #334155; }
+html[data-theme="dark"] .nav__toggle-bar { background: #F1F5F9; }
+html[data-theme="dark"] .hero {
+  background:
+    radial-gradient(1200px 500px at 85% -10%, rgba(30,58,138,.45) 0%, rgba(30,58,138,0) 60%),
+    radial-gradient(900px 400px at -10% 110%, rgba(30,41,59,.6) 0%, rgba(30,41,59,0) 60%);
+}
+html[data-theme="dark"] .hero__eyebrow { background: #1E3A8A; color: #BFDBFE; }
+html[data-theme="dark"] .hero__tags li { background: #1E293B; color: #CBD5E1; }
+html[data-theme="dark"] .btn--ghost {
+  background: #1E293B;
+  color: #F1F5F9;
+  border-color: #334155;
+}
+html[data-theme="dark"] .btn--ghost:hover { border-color: #60A5FA; color: #60A5FA; }
+html[data-theme="dark"] .profile__figure {
+  background: #1E293B;
+  border-color: #1E293B;
+  box-shadow:
+    0 25px 50px -20px rgba(0,0,0,.7),
+    0 0 0 2px rgba(96,165,250,.35);
+}
+html[data-theme="dark"] .profile__badge { background: #2563EB; }
+html[data-theme="dark"] .net-node circle { fill: #1E293B; stroke: #60A5FA; }
+html[data-theme="dark"] .mini-card,
+html[data-theme="dark"] .skill-card,
+html[data-theme="dark"] .project-card,
+html[data-theme="dark"] .timeline__body,
+html[data-theme="dark"] .contact-card {
+  background: #1E293B;
+  border-color: #334155;
+}
+html[data-theme="dark"] .mini-card__value,
+html[data-theme="dark"] .project-card__title,
+html[data-theme="dark"] .timeline__role,
+html[data-theme="dark"] .contact-card__value { color: #F1F5F9; }
+html[data-theme="dark"] .mini-card__sub,
+html[data-theme="dark"] .timeline__note,
+html[data-theme="dark"] .contact-card__label { color: #94A3B8; }
+html[data-theme="dark"] .skill-card__icon,
+html[data-theme="dark"] .contact-card__icon { background: #1E3A8A; color: #93C5FD; }
+html[data-theme="dark"] .skill-card:hover,
+html[data-theme="dark"] .project-card:hover { border-color: #3B82F6; }
+html[data-theme="dark"] .chips li {
+  background: #0F172A;
+  color: #E2E8F0;
+  border-color: #475569;
+}
+html[data-theme="dark"] .project-card__meta { border-top-color: #334155; }
+html[data-theme="dark"] .project-card__visual { border-bottom-color: #334155; }
+html[data-theme="dark"] .badge--ok { background: #14532D; color: #BBF7D0; border-color: #166534; }
+html[data-theme="dark"] .badge--warn { background: #78350F; color: #FDE68A; border-color: #92400E; }
+html[data-theme="dark"] .timeline::before { background: linear-gradient(to bottom, #1E40AF, #3B82F6, #1E40AF); }
+html[data-theme="dark"] .timeline__dot { box-shadow: 0 0 0 4px #1E293B; }
+html[data-theme="dark"] .contact-card:hover { border-color: #60A5FA; color: #F1F5F9; }
+html[data-theme="dark"] .footer { background: #020617; color: #94A3B8; }
+html[data-theme="dark"] .project-card__link a[aria-disabled="true"] { color: #64748B; }
+
+/* Menu mobile di dark mode */
+@media (max-width: 720px) {
+  html[data-theme="dark"] .nav__menu { background: #0F172A; border-bottom-color: #1E293B; }
+  html[data-theme="dark"] .nav__link { border-bottom-color: #1E293B; }
+}
+
+/* Visual proyek di layar kecil */
+@media (max-width: 420px) {
+  .project-card__visual { margin: -1.1rem -1.1rem 0; }
+}
+
+/* LED tidak berkedip kalau pengguna minta kurangi gerakan */
+@media (prefers-reduced-motion: reduce) {
+  .led { animation: none; }
 }
