@@ -713,6 +713,25 @@
     </svg>
   </button>
 
+  <!-- Widget chat AI "Tanya tentang Fadil" -->
+  <button class="chat-toggle" id="chatToggle" type="button" aria-label="Buka chat" title="Tanya tentang Fadil">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 2C6.48 2 2 5.94 2 10.8c0 2.7 1.58 5.1 4.07 6.66v4.54l4.2-2.3c.57.09 1.15.14 1.73.14 5.52 0 10-3.94 10-8.8S17.52 2 12 2z"/>
+    </svg>
+  </button>
+
+  <div class="chat-panel" id="chatPanel" role="dialog" aria-labelledby="chatTitle" hidden>
+    <div class="chat-panel__head">
+      <h2 id="chatTitle">Tanya tentang Fadil</h2>
+      <button class="chat-panel__close" id="chatClose" type="button" aria-label="Tutup chat">&times;</button>
+    </div>
+    <div class="chat-panel__messages" id="chatMessages"></div>
+    <form class="chat-panel__form" id="chatForm" autocomplete="off">
+      <input type="text" id="chatInput" placeholder="Ketik pesan…" maxlength="500" required>
+      <button type="submit" id="chatSend">Kirim</button>
+    </form>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>

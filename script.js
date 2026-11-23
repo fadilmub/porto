@@ -288,4 +288,82 @@
     a.addEventListener('click', (e) => e.preventDefault());
   });
 
+  /* ---------- 8. Widget chat AI "Tanya tentang Fadil" ---------- */
+  (function () {
+    var toggleBtn = document.getElementById('chatToggle');
+    var panel = document.getElementById('chatPanel');
+    var closeBtn = document.getElementById('chatClose');
+    var form = document.getElementById('chatForm');
+    var input = document.getElementById('chatInput');
+    var sendBtn = document.getElementById('chatSend');
+    var messages = document.getElementById('chatMessages');
+    if (!toggleBtn || !panel) return;
+
+    var awaitingResponse = false;
+    var greeted = false;
+    var typingEl = null;
+
+    function addMessage(text, sender) {
+      var msgDiv = document.createElement('div');
+      msgDiv.className = 'chat-message chat-message--' + sender;
+      var bubble = document.createElement('div');
+      bubble.className = 'chat-bubble';
+      bubble.textContent = text;
+      msgDiv.appendChild(bubble);
+      messages.appendChild(msgDiv);
+      messages.scrollTop = messages.scrollHeight;
+      return msgDiv;
+    }
+
+    function openPanel() {
+      panel.hidden = false;
+      if (!greeted) {
+        greeted = true;
+        addMessage('Halo! Tanya apa saja tentang Fadil — keahlian, pengalaman, atau proyeknya.', 'bot');
+      }
+      input.focus();
+    }
+
+    function closePanel() { panel.hidden = true; }
+
+    toggleBtn.addEventListener('click', function () {
+      if (panel.hidden) openPanel(); else closePanel();
+    });
+    closeBtn.addEventListener('click', closePanel);
+
+    async function sendMessage(msg) {
+      if (awaitingResponse || !msg.trim()) return;
+      if (msg.length > 500) msg = msg.slice(0, 500);
+      addMessage(msg, 'user');
+      input.value = '';
+      awaitingResponse = true;
+      sendBtn.disabled = true;
+      typingEl = addMessage('mengetik...', 'bot typing');
+      try {
+        var resp = await fetch('https://api.fadil.my.id/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg })
+        });
+        var data = await resp.json();
+        if (typingEl) { typingEl.remove(); typingEl = null; }
+        if (resp.ok && data.reply) addMessage(data.reply, 'bot');
+        else if (data.error) addMessage(data.error, 'bot');
+        else addMessage('Terjadi kesalahan tak terduga.', 'bot');
+      } catch (e) {
+        if (typingEl) { typingEl.remove(); typingEl = null; }
+        addMessage('Tidak dapat terhubung ke layanan chat. Coba lagi nanti.', 'bot');
+      } finally {
+        awaitingResponse = false;
+        sendBtn.disabled = false;
+        input.focus();
+      }
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      sendMessage(input.value);
+    });
+  })();
+
 })();

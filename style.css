@@ -1186,3 +1186,108 @@ html[data-theme="dark"] .project-card__link a[aria-disabled="true"] { color: #64
 @media (prefers-reduced-motion: reduce) {
   .led { animation: none; }
 }
+
+/* ---------- Widget chat AI "Tanya tentang Fadil" ---------- */
+.chat-toggle {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 5.5rem;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: #2563EB;
+  color: #fff;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 12px 25px -10px rgba(37,99,235,.7);
+  z-index: 1000;
+}
+.chat-toggle:hover { background: #1D4ED8; }
+.chat-toggle svg { width: 24px; height: 24px; }
+
+.chat-panel {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 9.5rem;
+  width: calc(100% - 2.5rem);
+  max-width: 360px;
+  height: 480px;
+  max-height: min(480px, 65vh);
+  background: #FFFFFF;
+  color: #0F172A;
+  border: 1px solid #E2E8F0;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px -12px rgba(15,23,42,.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 999;
+}
+.chat-panel[hidden] { display: none; }
+.chat-panel__head {
+  background: #2563EB;
+  color: #fff;
+  padding: .75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.chat-panel__head h2 { margin: 0; font-size: 1rem; color: #fff; }
+.chat-panel__close {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.chat-panel__messages {
+  flex: 1;
+  padding: .75rem 1rem;
+  overflow-y: auto;
+  font-size: .95rem;
+}
+.chat-message { margin-bottom: .75rem; }
+.chat-message--user { text-align: right; }
+.chat-message--bot { text-align: left; }
+.chat-bubble {
+  display: inline-block;
+  padding: .5rem .75rem;
+  border-radius: 12px;
+  max-width: 80%;
+  text-align: left;
+}
+.chat-message--user .chat-bubble { background: #2563EB; color: #fff; }
+.chat-message--bot .chat-bubble { background: #F1F5F9; color: #0F172A; }
+.chat-message.typing .chat-bubble { font-style: italic; opacity: .7; }
+.chat-panel__form {
+  display: flex;
+  border-top: 1px solid #E2E8F0;
+}
+.chat-panel__form input {
+  flex: 1;
+  border: none;
+  padding: .75rem;
+  font-size: .95rem;
+  font-family: inherit;
+  background: transparent;
+  color: inherit;
+}
+.chat-panel__form input:focus { outline: none; }
+.chat-panel__form button {
+  background: #2563EB;
+  color: #fff;
+  border: none;
+  padding: 0 1rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+.chat-panel__form button:disabled { opacity: .6; cursor: not-allowed; }
+@media (max-width: 480px) {
+  .chat-panel { right: .75rem; bottom: 9rem; }
+}
+html[data-theme="dark"] .chat-panel { background: #1E293B; color: #F1F5F9; border-color: #334155; }
+html[data-theme="dark"] .chat-panel__head { background: #1D4ED8; }
+html[data-theme="dark"] .chat-message--bot .chat-bubble { background: #334155; color: #F1F5F9; }
+html[data-theme="dark"] .chat-panel__form { border-top-color: #334155; }
