@@ -137,12 +137,28 @@
   /* ---------- 8. Scroll progress bar ---------- */
   const progress = document.getElementById('scrollProgress');
   if (progress) {
+    // Tinggi dokumen di-cache (diukur saat load/resize saja) + update dijeda
+    // sekali per frame, supaya scroll tidak memaksa reflow tiap event.
+    let maxScroll = 0;
+    let ticking = false;
+    const measure = () => {
+      maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    };
     const updateProgress = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+      ticking = false;
+      const pct = maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0;
       progress.style.width = pct + '%';
     };
-    window.addEventListener('scroll', updateProgress, { passive: true });
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateProgress);
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', measure);
+    window.addEventListener('load', measure);
+    measure();
     updateProgress();
   }
 
@@ -215,16 +231,23 @@
     let points = [];
     let raf = null;
 
+    // Ukuran hero di-cache (diukur sekali saat load/resize) supaya animasi
+    // tidak memaksa reflow tiap frame dengan getBoundingClientRect().
+    let heroW = 0;
+    let heroH = 0;
+
     const buildPoints = () => {
       const rect = hero.getBoundingClientRect();
+      heroW = rect.width;
+      heroH = rect.height;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.max(1, Math.floor(rect.width * dpr));
-      canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+      canvas.width = Math.max(1, Math.floor(heroW * dpr));
+      canvas.height = Math.max(1, Math.floor(heroH * dpr));
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.min(60, Math.floor((rect.width * rect.height) / 22000));
+      const count = Math.min(60, Math.floor((heroW * heroH) / 22000));
       points = Array.from({ length: count }, () => ({
-        x: Math.random() * rect.width,
-        y: Math.random() * rect.height,
+        x: Math.random() * heroW,
+        y: Math.random() * heroH,
         vx: (Math.random() - 0.5) * 0.25,
         vy: (Math.random() - 0.5) * 0.25,
         r: 1.4 + Math.random() * 1.6
@@ -232,8 +255,7 @@
     };
 
     const drawOnce = () => {
-      const rect = hero.getBoundingClientRect();
-      ctx.clearRect(0, 0, rect.width, rect.height);
+      ctx.clearRect(0, 0, heroW, heroH);
       points.forEach((pt) => {
         ctx.fillStyle = 'rgba(37, 99, 235, 0.55)';
         ctx.beginPath(); ctx.arc(pt.x, pt.y, pt.r, 0, Math.PI * 2); ctx.fill();
@@ -241,13 +263,12 @@
     };
 
     const draw = () => {
-      const rect = hero.getBoundingClientRect();
-      ctx.clearRect(0, 0, rect.width, rect.height);
+      ctx.clearRect(0, 0, heroW, heroH);
       for (let i = 0; i < points.length; i++) {
         const pt = points[i];
         pt.x += pt.vx; pt.y += pt.vy;
-        if (pt.x < 0 || pt.x > rect.width) pt.vx *= -1;
-        if (pt.y < 0 || pt.y > rect.height) pt.vy *= -1;
+        if (pt.x < 0 || pt.x > heroW) pt.vx *= -1;
+        if (pt.y < 0 || pt.y > heroH) pt.vy *= -1;
         for (let j = i + 1; j < points.length; j++) {
           const q = points[j];
           const dx = pt.x - q.x, dy = pt.y - q.y;
