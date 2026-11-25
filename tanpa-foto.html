@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ============ SEO METADATA (EDIT jika perlu) ============ -->
+  <title>Fadil Mubarok — Network Engineer | ISP HelpDesk | FTTH</title>
+  <meta name="description" content="Portofolio Fadil Mubarok — lulusan TKJ SMKN 1 Kedungwuni yang berfokus pada jaringan, ISP, MikroTik, FTTH, troubleshooting, dan infrastruktur jaringan." />
+  <meta name="author" content="Fadil Mubarok" />
+  <meta name="keywords" content="Fadil Mubarok, Network Engineer, ISP, MikroTik, FTTH, HelpDesk, TKJ, Jaringan Komputer" />
+  <meta name="theme-color" content="#2563EB" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph (EDIT url & gambar jika sudah tersedia) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Fadil Mubarok — Network Engineer | ISP HelpDesk | FTTH" />
+  <meta property="og:description" content="Connecting Networks. Building Reliable Infrastructure." />
+  <meta property="og:url" content="https://example.com/" />
+  <meta property="og:image" content="assets/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Canonical (EDIT setelah domain tersedia) -->
+  <link rel="canonical" href="https://example.com/" />
+
+  <!-- Favicon opsional: taruh file di assets/ lalu aktifkan baris berikut
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  -->
+
+  <!-- Font: Plus Jakarta Sans (isi) & Space Grotesk (judul) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Varian tanpa foto: diagram topologi FTTH di hero (draf Groq, diperbaiki) */
+    .topo-diagram {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      min-height: 420px;
+      justify-content: center;
+      width: 100%;
+      max-width: 340px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .topo-node {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: .75rem;
+      position: relative;
+      padding: .35rem 0;
+      width: 100%;
+    }
+    /* Garis penghubung vertikal di bawah ikon */
+    .topo-node::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 19px;
+      width: 2px;
+      height: 26px;
+      background: linear-gradient(to bottom, transparent 0%, #2563EB 50%, transparent 100%);
+      background-size: 100% 200%;
+      animation: topo-flow 2s linear infinite;
+    }
+    .topo-node--last::after { display: none; }
+    .topo-icon {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+    }
+    @media (min-width: 640px) {
+      .topo-icon { width: 48px; height: 48px; }
+      .topo-node::after { left: 23px; }
+    }
+    .topo-label {
+      text-align: left;
+      line-height: 1.25;
+      color: #0F172A;
+    }
+    .topo-label strong {
+      display: block;
+      font-weight: 700;
+      font-size: .95rem;
+      color: #2563EB;
+    }
+    .topo-label span {
+      display: block;
+      font-size: .78rem;
+      color: #475569;
+    }
+    .topo-caption {
+      margin-top: 1rem;
+      font-size: .78rem;
+      color: #475569;
+      align-self: center;
+      text-align: center;
+    }
+    @keyframes topo-flow {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 200%; }
+    }
+    html[data-theme="dark"] .topo-label { color: #F1F5F9; }
+    html[data-theme="dark"] .topo-label strong { color: #60A5FA; }
+    html[data-theme="dark"] .topo-label span,
+    html[data-theme="dark"] .topo-caption { color: #CBD5E1; }
+    html[data-theme="dark"] .topo-node::after {
+      background: linear-gradient(to bottom, transparent 0%, #60A5FA 50%, transparent 100%);
+    }
+    html[data-theme="dark"] .topo-icon rect,
+    html[data-theme="dark"] .topo-icon circle,
+    html[data-theme="dark"] .topo-icon polygon { fill: #1D4ED8; }
+  </style>
+</head>
+<body>
+
+  <!-- Scroll progress bar (lebar diatur via JS) -->
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+  <!-- Skip link untuk aksesibilitas keyboard -->
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <!-- ============================================================
+       NAVBAR
+       ============================================================ -->
+  <header class="site-header" id="siteHeader">
+    <nav class="nav container" aria-label="Navigasi utama">
+      <a class="nav__brand" href="#hero" aria-label="Fadil Mubarok — kembali ke atas">
+        <svg class="nav__brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+          <defs><linearGradient id="fmLogoGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#2563EB"/><stop offset="1" stop-color="#0F172A"/>
+          </linearGradient></defs>
+          <rect width="48" height="48" rx="11" fill="url(#fmLogoGrad)"/>
+          <circle cx="24" cy="24" r="19" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="1.5"/>
+          <g stroke="#fff" stroke-width="2.5" stroke-opacity=".85">
+            <path d="M24 24 13 13M24 24l11-11M24 24l-11 11M24 24l11 11"/>
+          </g>
+          <circle cx="24" cy="24" r="4.5" fill="#fff"/>
+          <circle cx="13" cy="13" r="3" fill="#38BDF8"/>
+          <circle cx="35" cy="13" r="3" fill="#fff"/>
+          <circle cx="13" cy="35" r="3" fill="#fff"/>
+          <circle cx="35" cy="35" r="3" fill="#38BDF8"/>
+        </svg>
+        <span class="nav__brand-text">Fadil Mubarok</span>
+      </a>
+
+      <ul class="nav__menu" id="navMenu">
+        <li><a class="nav__link" href="#tentang">Tentang</a></li>
+        <li><a class="nav__link" href="#keahlian">Keahlian</a></li>
+        <li><a class="nav__link" href="#proyek">Proyek</a></li>
+        <li><a class="nav__link" href="#pengalaman">Pengalaman</a></li>
+        <li><a class="nav__link nav__link--cta" href="#kontak">Kontak</a></li>
+      </ul>
+
+      <div class="nav__actions">
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          type="button"
+          aria-label="Ganti ke mode gelap"
+          aria-pressed="false"
+        >
+          <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20 12.5A8.5 8.5 0 1 1 11.5 4 6.5 6.5 0 0 0 20 12.5z"/></svg>
+          <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+
+        <button
+          class="nav__toggle"
+          id="navToggle"
+          type="button"
+          aria-label="Buka menu navigasi"
+          aria-expanded="false"
+          aria-controls="navMenu"
+        >
+          <span class="nav__toggle-bar" aria-hidden="true"></span>
+          <span class="nav__toggle-bar" aria-hidden="true"></span>
+          <span class="nav__toggle-bar" aria-hidden="true"></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+
+        <!-- ============================================================
+         HERO
+         ============================================================ -->
+    <section class="hero" id="hero">
+      <canvas class="hero__canvas" id="netCanvas" aria-hidden="true"></canvas>
+      <div class="container hero__inner">
+
+        <div class="hero__content">
+          <p class="hero__eyebrow">
+            <span class="dot" aria-hidden="true"></span>
+            Network Engineer · ISP HelpDesk · FTTH
+          </p>
+
+          <h1 class="hero__title">
+            Connecting Networks.<br />
+            <span class="text-blue">Building Reliable Infrastructure.</span>
+          </h1>
+
+          <p class="hero__desc">
+            Saya <strong>Fadil Mubarok</strong>, lulusan TKJ SMKN 1 Kedungwuni tahun 2024.
+            Berfokus pada jaringan internet service provider, konfigurasi MikroTik,
+            instalasi FTTH, serta troubleshooting dan pemeliharaan infrastruktur jaringan.
+          </p>
+
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#proyek">Lihat Proyek</a>
+            <a class="btn btn--ghost" href="#kontak">Hubungi Saya</a>
+          </div>
+
+          <ul class="hero__tags" aria-label="Bidang fokus">
+            <li>Networking</li>
+            <li>ISP</li>
+            <li>MikroTik</li>
+            <li>FTTH</li>
+            <li>Troubleshooting</li>
+          </ul>
+        </div>
+
+        <!-- Diagram topologi FTTH (varian tanpa foto) -->
+        <div class="hero__art">
+          <div class="topo-diagram">
+            <div class="topo-node">
+              <svg class="topo-icon" viewBox="0 0 64 64" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <rect x="12" y="20" width="40" height="24" rx="4" fill="#2563EB"/>
+              </svg>
+              <div class="topo-label">
+                <strong>MikroTik</strong>
+                <span>Core Router</span>
+              </div>
+            </div>
+
+            <div class="topo-node">
+              <svg class="topo-icon" viewBox="0 0 64 64" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="20" fill="#2563EB"/>
+              </svg>
+              <div class="topo-label">
+                <strong>OLT</strong>
+                <span>HiOSO HA7304V</span>
+              </div>
+            </div>
+
+            <div class="topo-node">
+              <svg class="topo-icon" viewBox="0 0 64 64" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <rect x="16" y="16" width="32" height="32" rx="6" fill="#2563EB"/>
+              </svg>
+              <div class="topo-label">
+                <strong>ODC</strong>
+                <span>Optical Distribution Cabinet</span>
+              </div>
+            </div>
+
+            <div class="topo-node">
+              <svg class="topo-icon" viewBox="0 0 64 64" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="32,12 48,48 16,48" fill="#2563EB"/>
+              </svg>
+              <div class="topo-label">
+                <strong>ODP</strong>
+                <span>Optical Distribution Point</span>
+              </div>
+            </div>
+
+            <div class="topo-node topo-node--last">
+              <svg class="topo-icon" viewBox="0 0 64 64" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="20" fill="#2563EB"/>
+                <path d="M22 28 L32 38 L42 28" stroke="#FFFFFF" stroke-width="3" fill="none"/>
+              </svg>
+              <div class="topo-label">
+                <strong>Pelanggan</strong>
+                <span>FTTH</span>
+              </div>
+            </div>
+
+            <div class="topo-caption">Topologi FTTH — dari core sampai pelanggan</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         TENTANG SAYA
+         ============================================================ -->
+    <section class="section section--gray" id="tentang">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="section__eyebrow">Tentang Saya</p>
+          <h2 class="section__title">Latar belakang &amp; minat teknis</h2>
+        </header>
+
+        <div class="about">
+          <div class="about__text reveal">
+            <p>
+              Saya <strong>Fadil Mubarok</strong>, lulusan <strong>SMKN 1 Kedungwuni</strong>
+              jurusan <strong>Teknik Komputer dan Jaringan (TKJ)</strong> tahun 2024.
+              Selama menempuh pendidikan, saya banyak mempelajari dasar jaringan komputer,
+              konfigurasi perangkat, hingga troubleshooting konektivitas.
+            </p>
+            <p>
+              Saat ini saya bekerja sebagai <strong>HelpDesk di ISP QCNet</strong>
+              sejak April 2026, menangani kebutuhan teknis pelanggan terkait
+              layanan internet. Sebelumnya saya berpengalaman sebagai
+              <strong>Teknisi Jaringan di NajmyNet</strong>
+              (Juni 2024 — Maret 2026), serta pernah menjalani magang sebagai
+              <strong>Technical Engineer di CEO Point Networking</strong> dengan fokus
+              pada instalasi dan administrasi jaringan.
+            </p>
+            <p>
+              Minat utama saya ada pada dunia <strong>networking dan ISP</strong>:
+              konfigurasi MikroTik, pembangunan jaringan FTTH, routing, monitoring,
+              dan pemeliharaan infrastruktur jaringan agar tetap stabil dan andal.
+            </p>
+          </div>
+
+          <aside class="about__cards reveal" aria-label="Ringkasan singkat">
+            <div class="mini-card">
+              <span class="mini-card__label">Pendidikan</span>
+              <span class="mini-card__value">SMKN 1 Kedungwuni</span>
+              <span class="mini-card__sub">TKJ · Lulus 2024</span>
+            </div>
+            <div class="mini-card">
+              <span class="mini-card__label">Pekerjaan saat ini</span>
+              <span class="mini-card__value">HelpDesk — QCNet</span>
+              <span class="mini-card__sub">ISP · Layanan internet pelanggan</span>
+            </div>
+            <div class="mini-card">
+              <span class="mini-card__label">Fokus</span>
+              <span class="mini-card__value">Networking &amp; ISP</span>
+              <span class="mini-card__sub">MikroTik · FTTH · Infrastruktur</span>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         KEAHLIAN
+         ============================================================ -->
+    <section class="section" id="keahlian">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="section__eyebrow">Keahlian</p>
+          <h2 class="section__title">Tools &amp; teknologi yang saya gunakan</h2>
+          <p class="section__lead">
+            Daftar di bawah menunjukkan area teknis yang saya pelajari dan kerjakan,
+            tanpa klaim tingkat kemahiran tertentu.
+          </p>
+        </header>
+
+        <div class="skills">
+
+          <!-- EDIT: sesuaikan isi kategori bila ada perubahan -->
+          <article class="skill-card reveal">
+            <h3 class="skill-card__title">
+              <span class="skill-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="3" y="3" width="18" height="6" rx="2"/>
+                  <rect x="3" y="15" width="18" height="6" rx="2"/>
+                  <path d="M7 9v6M17 9v6"/>
+                </svg>
+              </span>
+              MikroTik &amp; Routing
+            </h3>
+            <ul class="chips">
+              <li>MikroTik RouterOS</li>
+              <li>Routing</li>
+              <li>VLAN</li>
+              <li>QoS</li>
+              <li>Troubleshooting</li>
+            </ul>
+          </article>
+
+          <article class="skill-card reveal">
+            <h3 class="skill-card__title">
+              <span class="skill-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M4 20V8l8-4 8 4v12"/>
+                  <path d="M9 20v-6h6v6"/>
+                </svg>
+              </span>
+              FTTH &amp; Infrastruktur
+            </h3>
+            <ul class="chips">
+              <li>FTTH</li>
+              <li>OLT / ONU</li>
+              <li>ODC / ODP</li>
+              <li>Instalasi Jaringan</li>
+            </ul>
+          </article>
+
+          <article class="skill-card reveal">
+            <h3 class="skill-card__title">
+              <span class="skill-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="3" y="4" width="18" height="14" rx="2"/>
+                  <path d="M8 20h8M12 18v2"/>
+                </svg>
+              </span>
+              Server &amp; Virtualisasi
+            </h3>
+            <ul class="chips">
+              <li>Linux</li>
+              <li>Ubuntu Server</li>
+              <li>Proxmox</li>
+            </ul>
+          </article>
+
+          <article class="skill-card reveal">
+            <h3 class="skill-card__title">
+              <span class="skill-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M3 12h4l2.5-6 3 12 2.5-6h6"/>
+                </svg>
+              </span>
+              Monitoring
+            </h3>
+            <ul class="chips">
+              <li>Monitoring Jaringan</li>
+              <li>Telegram Notifications</li>
+            </ul>
+          </article>
+
+          <article class="skill-card skill-card--wide reveal">
+            <h3 class="skill-card__title">
+              <span class="skill-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M8 6l-5 6 5 6M16 6l5 6-5 6"/>
+                </svg>
+              </span>
+              Kemampuan Pendukung
+            </h3>
+            <ul class="chips">
+              <li>PHP</li>
+              <li>JavaScript</li>
+              <li>MySQL / MariaDB</li>
+            </ul>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PROYEK
+         ============================================================ -->
+    <section class="section section--gray" id="proyek">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="section__eyebrow">Proyek</p>
+          <h2 class="section__title">Eksplorasi &amp; pekerjaan teknis</h2>
+          <p class="section__lead">
+            Beberapa proyek dan eksperimen yang saya kerjakan. Status dan dokumentasi
+            ditulis apa adanya sesuai kondisi terkini.
+          </p>
+        </header>
+
+        <div class="projects">
+
+          <!-- Proyek 1 -->
+          <article class="project-card reveal">
+            <div class="project-card__visual" aria-hidden="true">
+              <svg viewBox="0 0 400 140" preserveAspectRatio="xMidYMid slice">
+                <rect width="400" height="140" fill="#0F172A"/>
+                <g stroke="#1E293B" stroke-width="1">
+                  <path d="M0 35H400M0 70H400M0 105H400M50 0V140M150 0V140M250 0V140M350 0V140"/>
+                </g>
+                <g stroke="#38BDF8" stroke-width="1.6" fill="none" opacity="0.7">
+                  <path d="M200 70 L80 40 L60 100"/>
+                  <path d="M200 70 L320 35 L345 95"/>
+                  <path d="M200 70 L200 115"/>
+                </g>
+                <circle cx="200" cy="70" r="11" fill="#2563EB" stroke="#fff" stroke-width="1.5"/>
+                <g fill="#38BDF8" stroke="#0F172A" stroke-width="1.5">
+                  <circle cx="80" cy="40" r="7"/>
+                  <circle cx="320" cy="35" r="7"/>
+                  <circle cx="60" cy="100" r="6"/>
+                  <circle cx="345" cy="95" r="6"/>
+                  <circle cx="200" cy="115" r="6"/>
+                </g>
+                <g fill="#94A3B8" font-family="monospace" font-size="10">
+                  <text x="200" y="52" text-anchor="middle">ODC</text>
+                  <text x="80" y="28" text-anchor="middle">ODP</text>
+                  <text x="320" y="23" text-anchor="middle">ODP</text>
+                </g>
+              </svg>
+            </div>
+            <div class="project-card__top">
+              <h3 class="project-card__title">Fiber Manager</h3>
+              <span class="badge badge--ok">Aktif</span>
+            </div>
+            <p class="project-card__desc">
+              Aplikasi internal untuk memetakan dan mendata jaringan FTTH —
+              khususnya lokasi <strong>ODC/ODP</strong> beserta informasi jaringan
+              yang terkait, ditampilkan di atas peta.
+            </p>
+            <dl class="project-card__meta">
+              <div>
+                <dt>Tujuan</dt>
+                <dd>Mempermudah pendataan dan pencarian titik jaringan secara visual.</dd>
+              </div>
+              <div>
+                <dt>Kontribusi</dt>
+                <dd>Perancangan alur data, pembuatan antarmuka, dan integrasi peta.</dd>
+              </div>
+              <div>
+                <dt>Teknologi</dt>
+                <dd>PHP, JavaScript, MariaDB, Leaflet</dd>
+              </div>
+            </dl>
+            <ul class="chips chips--sm">
+              <li>PHP</li>
+              <li>JavaScript</li>
+              <li>MariaDB</li>
+              <li>Leaflet</li>
+            </ul>
+            <p class="project-card__link">
+              <a href="https://github.com/fadilmub/fiber-manager" target="_blank" rel="noopener noreferrer">Lihat di GitHub</a>
+            </p>
+          </article>
+
+          <!-- Proyek 2 -->
+          <article class="project-card reveal">
+            <div class="project-card__visual project-card__visual--terminal" aria-hidden="true">
+              <div class="terminal">
+                <div class="terminal__bar"><span></span><span></span><span></span></div>
+                <p><span class="t-prompt">[admin@MikroTik] &gt;</span> /interface monitor-traffic ether1</p>
+                <p>tx: 84.2 Mbps &nbsp; rx: 91.7 Mbps</p>
+                <p class="t-ok">Telegram: notifikasi terkirim</p>
+              </div>
+            </div>
+            <div class="project-card__top">
+              <h3 class="project-card__title">MikroTik Link Monitoring + Telegram</h3>
+              <span class="badge badge--warn">Eksperimen</span>
+            </div>
+            <p class="project-card__desc">
+              Eksperimen monitoring status link pada perangkat MikroTik yang
+              mengirimkan notifikasi otomatis ke Telegram ketika terjadi
+              perubahan kondisi koneksi.
+            </p>
+            <dl class="project-card__meta">
+              <div>
+                <dt>Tujuan</dt>
+                <dd>Mengetahui gangguan link lebih cepat tanpa harus memantau manual.</dd>
+              </div>
+              <div>
+                <dt>Kontribusi</dt>
+                <dd>Penyusunan skrip monitoring dan integrasi bot notifikasi.</dd>
+              </div>
+              <div>
+                <dt>Teknologi</dt>
+                <dd>MikroTik RouterOS, Telegram Bot API</dd>
+              </div>
+            </dl>
+            <ul class="chips chips--sm">
+              <li>MikroTik</li>
+              <li>RouterOS</li>
+              <li>Telegram API</li>
+            </ul>
+          </article>
+
+          <!-- Proyek 3 -->
+          <article class="project-card reveal">
+            <div class="project-card__visual" aria-hidden="true">
+              <svg viewBox="0 0 400 140" preserveAspectRatio="xMidYMid slice">
+                <rect width="400" height="140" fill="#0F172A"/>
+                <g fill="#1E293B" stroke="#334155">
+                  <rect x="160" y="12" width="80" height="26" rx="4"/>
+                  <rect x="160" y="44" width="80" height="26" rx="4"/>
+                  <rect x="160" y="76" width="80" height="26" rx="4"/>
+                  <rect x="160" y="108" width="80" height="16" rx="4"/>
+                </g>
+                <g>
+                  <circle class="led" cx="170" cy="25" r="3" fill="#4ADE80"/>
+                  <circle class="led" cx="170" cy="57" r="3" fill="#38BDF8"/>
+                  <circle class="led" cx="170" cy="89" r="3" fill="#4ADE80"/>
+                  <circle class="led" cx="170" cy="116" r="3" fill="#FBBF24"/>
+                </g>
+                <g stroke="#475569" stroke-width="2" stroke-linecap="round">
+                  <path d="M182 25h44M182 57h44M182 89h44"/>
+                </g>
+                <text x="200" y="136" text-anchor="middle" fill="#94A3B8" font-family="monospace" font-size="10">PROXMOX · CLOUDFLARE TUNNEL</text>
+              </svg>
+            </div>
+            <div class="project-card__top">
+              <h3 class="project-card__title">Homelab Proxmox &amp; Cloudflare Tunnel</h3>
+              <span class="badge badge--ok">Aktif</span>
+            </div>
+            <p class="project-card__desc">
+              Lingkungan belajar mandiri berupa homelab untuk menjalankan
+              virtual machine dan layanan berbasis Linux, serta mengekspos
+              layanan tertentu melalui Cloudflare Tunnel.
+            </p>
+            <dl class="project-card__meta">
+              <div>
+                <dt>Tujuan</dt>
+                <dd>Media latihan virtualisasi, server, dan publikasi layanan.</dd>
+              </div>
+              <div>
+                <dt>Kontribusi</dt>
+                <dd>Setup hypervisor, instalasi VM, dan konfigurasi tunnel.</dd>
+              </div>
+              <div>
+                <dt>Teknologi</dt>
+                <dd>Proxmox, Ubuntu Server, Cloudflare Tunnel</dd>
+              </div>
+            </dl>
+            <ul class="chips chips--sm">
+              <li>Proxmox</li>
+              <li>Ubuntu Server</li>
+              <li>Cloudflare Tunnel</li>
+            </ul>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PENGALAMAN (TIMELINE)
+         ============================================================ -->
+    <section class="section" id="pengalaman">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="section__eyebrow">Pengalaman</p>
+          <h2 class="section__title">Perjalanan pendidikan &amp; karier</h2>
+        </header>
+
+        <ol class="timeline">
+
+          <li class="timeline__item reveal">
+            <div class="timeline__dot" aria-hidden="true"></div>
+            <div class="timeline__body">
+              <span class="timeline__period">April 2026 — Saat ini</span>
+              <h3 class="timeline__role">HelpDesk</h3>
+              <p class="timeline__org">QCNet (ISP)</p>
+              <p class="timeline__desc">
+                Menangani kebutuhan teknis pelanggan terkait layanan internet.
+              </p>
+            </div>
+          </li>
+
+          <li class="timeline__item reveal">
+            <div class="timeline__dot" aria-hidden="true"></div>
+            <div class="timeline__body">
+              <span class="timeline__period">Juni 2024 — Maret 2026</span>
+              <h3 class="timeline__role">Teknisi Jaringan</h3>
+              <p class="timeline__org">NajmyNet</p>
+              <p class="timeline__desc">
+                Pekerjaan teknis lapangan terkait jaringan dan konektivitas pelanggan.
+              </p>
+            </div>
+          </li>
+
+          <li class="timeline__item reveal">
+            <div class="timeline__dot" aria-hidden="true"></div>
+            <div class="timeline__body">
+              <span class="timeline__period">Magang</span>
+              <h3 class="timeline__role">Magang — Technical Engineer</h3>
+              <p class="timeline__org">CEO Point Networking</p>
+              <p class="timeline__desc">
+                Terlibat dalam instalasi dan administrasi jaringan.
+              </p>
+            </div>
+          </li>
+
+          <li class="timeline__item reveal">
+            <div class="timeline__dot" aria-hidden="true"></div>
+            <div class="timeline__body">
+              <span class="timeline__period">Lulus 2024</span>
+              <h3 class="timeline__role">Teknik Komputer dan Jaringan (TKJ)</h3>
+              <p class="timeline__org">SMKN 1 Kedungwuni</p>
+              <p class="timeline__desc">
+                Mempelajari dasar jaringan komputer, konfigurasi perangkat,
+                dan troubleshooting konektivitas.
+              </p>
+            </div>
+          </li>
+
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         KONTAK
+         ============================================================ -->
+    <section class="section section--gray" id="kontak">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="section__eyebrow">Kontak</p>
+          <h2 class="section__title">Mari terhubung</h2>
+          <p class="section__lead">
+            Terbuka untuk diskusi seputar jaringan, ISP, maupun peluang kerja sama.
+          </p>
+        </header>
+
+        <!-- EDIT: ganti semua placeholder di bawah dengan data asli -->
+        <div class="contact-grid">
+
+          <a class="contact-card reveal" href="mailto:fadilmubarok713@gmail.com">
+            <span class="contact-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="5" width="18" height="14" rx="2"/>
+                <path d="M3.5 7l8.5 6 8.5-6"/>
+              </svg>
+            </span>
+            <span class="contact-card__label">Email</span>
+            <span class="contact-card__value">fadilmubarok713@gmail.com</span>
+          </a>
+
+          <a class="contact-card reveal" href="https://wa.me/628xxxxxxxxxx" target="_blank" rel="noopener noreferrer">
+            <span class="contact-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M20 11.5a8 8 0 01-11.9 7L4 20l1.6-4A8 8 0 1120 11.5z"/>
+              </svg>
+            </span>
+            <span class="contact-card__label">WhatsApp</span>
+            <span class="contact-card__value">+62 8xx-xxxx-xxxx</span>
+          </a>
+
+          <a class="contact-card reveal" href="https://github.com/fadilmub" target="_blank" rel="noopener noreferrer">
+            <span class="contact-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M9 19c-4 1.2-4-2.2-6-2.7m12 5v-3.4a3 3 0 00-.9-2.4c3-.3 6-1.5 6-6.5a5 5 0 00-1.4-3.5 4.6 4.6 0 00-.1-3.5s-1.1-.3-3.6 1.4a12.3 12.3 0 00-6.4 0C6.1 1.7 5 2 5 2a4.6 4.6 0 00-.1 3.5A5 5 0 003.5 9c0 5 3 6.2 6 6.5a3 3 0 00-.9 2.3V22"/>
+              </svg>
+            </span>
+            <span class="contact-card__label">GitHub</span>
+            <span class="contact-card__value">github.com/fadilmub</span>
+          </a>
+
+          <a class="contact-card reveal" href="https://id.linkedin.com/in/fadil-mubarok-36639a451" target="_blank" rel="noopener noreferrer">
+            <span class="contact-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 014 0v4"/>
+              </svg>
+            </span>
+            <span class="contact-card__label">LinkedIn</span>
+            <span class="contact-card__value">id.linkedin.com/in/fadil-mubarok-36639a451</span>
+          </a>
+
+          <a class="contact-card contact-card--wide reveal" href="assets/cv-fadil-mubarok.pdf" download>
+            <span class="contact-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/>
+                <path d="M14 3v5h5M12 12v5M9.5 14.5L12 17l2.5-2.5"/>
+              </svg>
+            </span>
+            <span class="contact-card__label">Curriculum Vitae</span>
+            <span class="contact-card__value">Unduh CV (PDF)</span>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p class="footer__text">
+        © <span id="year">2025</span> Fadil Mubarok. Dibuat dengan HTML, CSS &amp; JavaScript.
+      </p>
+      <a class="footer__top" href="#hero" aria-label="Kembali ke atas">
+        Kembali ke atas
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+      </a>
+    </div>
+  </footer>
+
+  <!-- Tombol kembali ke atas (muncul saat scroll) -->
+  <button class="to-top" id="toTop" type="button" aria-label="Kembali ke atas halaman">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+      <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+  </button>
+
+  <!-- Widget chat AI "Tanya tentang Fadil" -->
+  <button class="chat-toggle" id="chatToggle" type="button" aria-label="Buka chat" title="Tanya tentang Fadil">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 2C6.48 2 2 5.94 2 10.8c0 2.7 1.58 5.1 4.07 6.66v4.54l4.2-2.3c.57.09 1.15.14 1.73.14 5.52 0 10-3.94 10-8.8S17.52 2 12 2z"/>
+    </svg>
+  </button>
+
+  <div class="chat-panel" id="chatPanel" role="dialog" aria-labelledby="chatTitle" hidden>
+    <div class="chat-panel__head">
+      <h2 id="chatTitle">Tanya tentang Fadil</h2>
+      <button class="chat-panel__close" id="chatClose" type="button" aria-label="Tutup chat">&times;</button>
+    </div>
+    <div class="chat-panel__messages" id="chatMessages"></div>
+    <form class="chat-panel__form" id="chatForm" autocomplete="off">
+      <input type="text" id="chatInput" placeholder="Ketik pesan…" maxlength="500" required>
+      <button type="submit" id="chatSend">Kirim</button>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
