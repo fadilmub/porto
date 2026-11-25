@@ -268,11 +268,25 @@
     if (prefersReducedMotion) {
       drawOnce();
     } else {
-      raf = requestAnimationFrame(draw);
+      // Jalan hanya saat hero terlihat & tab aktif — hemat baterai di HP low-end.
+      let heroVisible = true;
+      const startLoop = () => {
+        if (!raf && !document.hidden && heroVisible) raf = requestAnimationFrame(draw);
+      };
+      const stopLoop = () => {
+        if (raf) cancelAnimationFrame(raf);
+        raf = null;
+      };
+      startLoop();
       document.addEventListener('visibilitychange', () => {
-        if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = null; }
-        else if (!raf) raf = requestAnimationFrame(draw);
+        if (document.hidden) stopLoop(); else startLoop();
       });
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver((entries) => {
+          heroVisible = entries[0].isIntersecting;
+          if (heroVisible) startLoop(); else stopLoop();
+        }, { threshold: 0 }).observe(hero);
+      }
     }
     let resizeTimer = null;
     window.addEventListener('resize', () => {
